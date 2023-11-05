@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="E= γ mc²">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://a15355447898a.github.io/project/2023/11/04/暗影骑士擎pro-安装archlinux记录/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="暗影骑士擎Pro,安装ArchLinux记录安装前的准备准备安装镜像在清华大学开源镜像源 下载最新的Archiso文件 准备一个u盘,制作启动u盘建议使用 ventoy软件，ventoy会把u盘分成两个分区 第一个分区可以格式化成 exFAT，可以拷贝各种镜像;第二分区是 32MB 的VTOYEFI分区,不要动它 把前面下载的iso文件放入第一个分区 关闭安全启动关闭电脑,再次启动的同时按f2键,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="暗影骑士擎Pro,安装ArchLinux记录">
+<meta property="og:url" content="http://a15355447898a.github.io/project/2023/11/04/%E6%9A%97%E5%BD%B1%E9%AA%91%E5%A3%AB%E6%93%8EPro-%E5%AE%89%E8%A3%85ArchLinux%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="暗影骑士擎Pro,安装ArchLinux记录安装前的准备准备安装镜像在清华大学开源镜像源 下载最新的Archiso文件 准备一个u盘,制作启动u盘建议使用 ventoy软件，ventoy会把u盘分成两个分区 第一个分区可以格式化成 exFAT，可以拷贝各种镜像;第二分区是 32MB 的VTOYEFI分区,不要动它 把前面下载的iso文件放入第一个分区 关闭安全启动关闭电脑,再次启动的同时按f2键,">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-11-04T14:38:14.000Z">
+<meta property="article:modified_time" content="2023-11-04T15:01:09.742Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Arch">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/project/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/project/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/project/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            暗影骑士擎Pro,安装ArchLinux记录 -
+        
+        E= γ mc²の博客
+    </title>
+    
+<link rel="stylesheet" href="/project/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/project/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/project/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/project/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/project/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"a15355447898a.github.io","root":"/project/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"E= γ mc²の博客","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/project/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/project/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/project/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/project/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/project/">
+                
+                E= γ mc²の博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/project/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/project/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">暗影骑士擎Pro,安装ArchLinux记录</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/project/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">E= γ mc²</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-11-04 22:38:14</span>
+        <span class="mobile">2023-11-04 22:38:14</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-11-04 23:01:09</span>
+            <span class="mobile">2023-11-04 23:01:09</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/project/tags/Arch/">Arch</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="暗影骑士擎Pro-安装ArchLinux记录"><a href="#暗影骑士擎Pro-安装ArchLinux记录" class="headerlink" title="暗影骑士擎Pro,安装ArchLinux记录"></a>暗影骑士擎Pro,安装ArchLinux记录</h1><h2 id="安装前的准备"><a href="#安装前的准备" class="headerlink" title="安装前的准备"></a>安装前的准备</h2><h3 id="准备安装镜像"><a href="#准备安装镜像" class="headerlink" title="准备安装镜像"></a>准备安装镜像</h3><p>在<a class="link"   target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/archlinux/iso/" >清华大学开源镜像源 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>下载最新的Archiso文件</p>
+<h3 id="准备一个u盘-制作启动u盘"><a href="#准备一个u盘-制作启动u盘" class="headerlink" title="准备一个u盘,制作启动u盘"></a>准备一个u盘,制作启动u盘</h3><p>建议使用 <code>ventoy</code>软件，<code>ventoy</code>会把u盘分成两个分区</p>
+<p>第一个分区可以格式化成 <code>exFAT</code>，可以拷贝各种镜像;第二分区是 32MB 的VTOYEFI分区,不要动它</p>
+<p>把前面下载的iso文件放入第一个分区</p>
+<h3 id="关闭安全启动"><a href="#关闭安全启动" class="headerlink" title="关闭安全启动"></a>关闭安全启动</h3><p>关闭电脑,再次启动的同时按f2键,进入bios</p>
+<p>设置bios密码,然后你就可以设置关闭安全启动了</p>
+<p>设置f12快速启动菜单</p>
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="进入Archlivecd"><a href="#进入Archlivecd" class="headerlink" title="进入Archlivecd"></a>进入Archlivecd</h3><p>开机的时候按f12进入选择菜单,选中你的u盘,回车</p>
+<p>在<code>ventoy</code>菜单中选择arch的那一项</p>
+<h3 id="联网"><a href="#联网" class="headerlink" title="联网"></a>联网</h3><p>老老实实插网线</p>
+<p>获取IP地址</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start dhcpd</span><br></pre></td></tr></table></figure></div>
+
+<p>测试网络连接</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="更新系统时间"><a href="#更新系统时间" class="headerlink" title="更新系统时间"></a>更新系统时间</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timedatectl set-ntp <span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><ul>
+<li><p>先用 <code>lsblk</code>查看硬盘设备</p>
+</li>
+<li><p>再用<code>cfdisk</code>分区</p>
+</li>
+<li><p>sdb1</p>
+<ul>
+<li>1MB</li>
+<li>标签BIOS boot</li>
+<li>未格式化</li>
+<li>给gpt+bios的方案安装grub用</li>
+</ul>
+</li>
+<li><p>sdb2</p>
+<ul>
+<li>500MB</li>
+<li>标签EFI System</li>
+<li>fat16</li>
+<li>efi分区</li>
+</ul>
+</li>
+<li><p>sdb3</p>
+<ul>
+<li>剩下的全部</li>
+<li>标签linux file</li>
+<li>btrfs</li>
+<li>根目录</li>
+</ul>
+</li>
+</ul>
+<h3 id="格式化文件系统"><a href="#格式化文件系统" class="headerlink" title="格式化文件系统"></a>格式化文件系统</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkfs.vfat /dev/sdb2</span><br><span class="line">mkfs.btrfs /dev/sdb3</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="给btrfs建立子卷"><a href="#给btrfs建立子卷" class="headerlink" title="给btrfs建立子卷"></a>给btrfs建立子卷</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sdb3 /mnt</span><br><span class="line"><span class="built_in">cd</span> /mnt</span><br><span class="line">btrfs subvolume create @boot</span><br><span class="line">btrfs subvolume create @</span><br><span class="line">btrfs subvolume create @home</span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">umount /mnt</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="挂载分区"><a href="#挂载分区" class="headerlink" title="挂载分区"></a>挂载分区</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sdb3 /mnt -o subvol=@</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /mnt/boot</span><br><span class="line"><span class="built_in">mkdir</span> /mnt/boot/efi</span><br><span class="line"><span class="built_in">mkdir</span> /mnt/home</span><br><span class="line"></span><br><span class="line">mount /dev/sdb3 /mnt/boot -o subvol=@boot</span><br><span class="line">mount /dev/sdb2 /mnt/boot/efi</span><br><span class="line">mount /dev/sdb3 /mnt/home -o subvol=@home</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装系统"><a href="#安装系统" class="headerlink" title="安装系统"></a>安装系统</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware nano neovim networkmanager btrfs-progs grub efibootmgr</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="生成fstab"><a href="#生成fstab" class="headerlink" title="生成fstab"></a>生成<code>fstab</code></h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U /mnt &gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="设置时区"><a href="#设置时区" class="headerlink" title="设置时区"></a>设置时区</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line">hwclock --systohc --localtime</span><br><span class="line">pacman -S ntp</span><br><span class="line">systemctl <span class="built_in">enable</span> ntpd</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="本地化设置"><a href="#本地化设置" class="headerlink" title="本地化设置"></a>本地化设置</h3><p>移除  <code>/etc/locale.gen</code> 对应行前面的注释符号（＃）即可，建议选择带 UTF-8 的项</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/locale.gen</span><br><span class="line">------------------------------</span><br><span class="line">en_US.UTF-8 UTF-8</span><br><span class="line">zh_CN.UTF-8 UTF-8</span><br></pre></td></tr></table></figure></div>
+
+<p>然后创建<code>locale.conf</code>文件，并编辑设定LANG变量，比如</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/locale.conf</span><br><span class="line">------------------------------</span><br><span class="line">LANG=zh_CN.UTF-8</span><br></pre></td></tr></table></figure></div>
+
+<p>然后执行</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locale-gen</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="设置主机名字"><a href="#设置主机名字" class="headerlink" title="设置主机名字"></a>设置主机名字</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> Arch &gt; /etc/hostname </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="设置开机连接网络"><a href="#设置开机连接网络" class="headerlink" title="设置开机连接网络"></a>设置开机连接网络</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Initramfs配置"><a href="#Initramfs配置" class="headerlink" title="Initramfs配置"></a><code>Initramfs</code>配置</h3><p>为了使 <code>btrfs check</code>能够在挂载系统上使用</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/mkinitcpio.conf</span><br><span class="line">------------------------</span><br><span class="line">MODULES=(btrfs)</span><br><span class="line">BINARIES=(btrfs)</span><br></pre></td></tr></table></figure></div>
+
+<p>重新创建一个<code>Initramfs</code></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkinitcpio -p linux-zen</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="设置root密码"><a href="#设置root密码" class="headerlink" title="设置root密码"></a>设置<code>root</code>密码</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装微码更新"><a href="#安装微码更新" class="headerlink" title="安装微码更新"></a>安装微码更新</h3><p>安装 <code>microcode</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S intel-ucode amd-ucode</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装grub"><a href="#安装grub" class="headerlink" title="安装grub"></a>安装grub</h3><p>为btrfs配置文件</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/default/grub</span><br><span class="line">--------------------</span><br><span class="line">GRUB_PRELOAD_MODULES=<span class="string">&quot;... btrfs&quot;</span></span><br><span class="line">GRUB_DISABLE_OS_PROBER=<span class="literal">false</span></span><br></pre></td></tr></table></figure></div>
+
+<p>安装grub</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target=i386-pc /dev/sdb</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch --removable</span><br></pre></td></tr></table></figure></div>
+
+<p>然后生成  <code>grub.cfg</code>  文件</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="退出-chroot环境，输入-exit或者按-Ctrl-d"><a href="#退出-chroot环境，输入-exit或者按-Ctrl-d" class="headerlink" title="退出 chroot环境，输入 exit或者按 Ctrl+d"></a>退出 <code>chroot</code>环境，输入 <code>exit</code>或者按 <code>Ctrl+d</code></h3><h3 id="卸载文件系统"><a href="#卸载文件系统" class="headerlink" title="卸载文件系统"></a>卸载文件系统</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount -R /mnt</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="关机，移除安装介质，然后重启-重启后你可以使用f12菜单来进入到刚刚安装好的archlinux"><a href="#关机，移除安装介质，然后重启-重启后你可以使用f12菜单来进入到刚刚安装好的archlinux" class="headerlink" title="关机，移除安装介质，然后重启(重启后你可以使用f12菜单来进入到刚刚安装好的archlinux)"></a>关机，移除安装介质，然后重启(重启后你可以使用f12菜单来进入到刚刚安装好的archlinux)</h3><h2 id="处理一些小事情"><a href="#处理一些小事情" class="headerlink" title="处理一些小事情"></a>处理一些小事情</h2><h3 id="添加archlinuxcn源"><a href="#添加archlinuxcn源" class="headerlink" title="添加archlinuxcn源"></a>添加<code>archlinuxcn</code>源</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/pacman.conf</span><br><span class="line">------------------------</span><br><span class="line">[archlinuxcn]</span><br><span class="line">Server = https://mirrors.bfsu.edu.cn/archlinuxcn/<span class="variable">$arch</span></span><br></pre></td></tr></table></figure></div>
+
+<p>安装<code>archlinuxcn-keyring</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S archlinuxcn-keyring</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装paru"><a href="#安装paru" class="headerlink" title="安装paru"></a>安装<code>paru</code></h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S paru</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装中文字体"><a href="#安装中文字体" class="headerlink" title="安装中文字体"></a>安装中文字体</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra</span><br><span class="line">pacman -S adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts  </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="添加用户arch-这里换成你想要的用户名"><a href="#添加用户arch-这里换成你想要的用户名" class="headerlink" title="添加用户arch(这里换成你想要的用户名)"></a>添加用户<code>arch</code>(这里换成你想要的用户名)</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd <span class="built_in">arch</span> -U -G wheel -s /bin/bash -m </span><br><span class="line">passwd <span class="built_in">arch</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="添加sudo权限"><a href="#添加sudo权限" class="headerlink" title="添加sudo权限"></a>添加<code>sudo</code>权限</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/sudoers</span><br><span class="line">------------------------</span><br><span class="line">%wheel ALL=(ALL:ALL) ALL</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="解决一个音频驱动的问题"><a href="#解决一个音频驱动的问题" class="headerlink" title="解决一个音频驱动的问题"></a>解决一个音频驱动的问题</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S sof-firmware</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="开始安装桌面"><a href="#开始安装桌面" class="headerlink" title="开始安装桌面"></a>开始安装桌面</h2><p>这里推荐使用kde,因为gnome的分数缩放需要补丁</p>
+<h3 id="安装登录管理器"><a href="#安装登录管理器" class="headerlink" title="安装登录管理器"></a>安装登录管理器</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -S sddm</span><br><span class="line">systemctl <span class="built_in">enable</span> sddm</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装server"><a href="#安装server" class="headerlink" title="安装server"></a>安装server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S xorg-server</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="最小化安装kde"><a href="#最小化安装kde" class="headerlink" title="最小化安装kde"></a>最小化安装kde</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S plasma-meta dolphin</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="解决双显卡问题"><a href="#解决双显卡问题" class="headerlink" title="解决双显卡问题"></a>解决双显卡问题</h2><h3 id="添加内核参数ibt-off"><a href="#添加内核参数ibt-off" class="headerlink" title="添加内核参数ibt=off"></a>添加内核参数<code>ibt=off</code></h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/default/grub</span><br><span class="line">------------------------</span><br><span class="line">GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">&quot;... ibt=off&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>然后再次生成  <code>grub.cfg</code>  文件</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="安装n卡驱动与配置-使用PRIME方案"><a href="#安装n卡驱动与配置-使用PRIME方案" class="headerlink" title="安装n卡驱动与配置(使用PRIME方案)"></a>安装n卡驱动与配置(使用<code>PRIME</code>方案)</h3><blockquote>
+<p>具体参见 <a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/PRIME#PRIME_render_offload" >ArchWiki PRIME <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</blockquote>
+<p>安装<code>nvidia</code>包</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S nvidia-dkms</span><br></pre></td></tr></table></figure></div>
+
+<p>安装<code>nvidia-prime</code>包来使用官方配置(不起作用的话,你就要去 Wiki 看怎么手动配置了,不过我觉得一般都不需要手动配置啦)</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S nvidia-prime</span><br></pre></td></tr></table></figure></div>
+
+<p>这时候重启系统就应该起作用了，你可以通过<code>prime-run</code>命令使指定程序在 NVIDIA 显卡上渲染</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 暗影骑士擎Pro,安装ArchLinux记录</li>
+        <li><strong>Author:</strong> E= γ mc²</li>
+        <li><strong>Created at
+                :</strong> 2023-11-04 22:38:14</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-11-04 23:01:09
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2023/11/04/暗影骑士擎Pro-安装ArchLinux记录/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/project/tags/Arch/">#Arch</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/project/2023/11/04/%E4%BD%BF%E7%94%A8Arch%E5%AE%89%E8%A3%85NixOS/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">使用Arch安装NixOS</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/project/2023/11/04/%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%90%AD%E5%BB%BA/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">软路由</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from '/project/js/libs/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">暗影骑士擎Pro,安装ArchLinux记录</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9A%97%E5%BD%B1%E9%AA%91%E5%A3%AB%E6%93%8EPro-%E5%AE%89%E8%A3%85ArchLinux%E8%AE%B0%E5%BD%95"><span class="nav-text">暗影骑士擎Pro,安装ArchLinux记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87"><span class="nav-text">安装前的准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F"><span class="nav-text">准备安装镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E4%B8%80%E4%B8%AAu%E7%9B%98-%E5%88%B6%E4%BD%9C%E5%90%AF%E5%8A%A8u%E7%9B%98"><span class="nav-text">准备一个u盘,制作启动u盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E5%AE%89%E5%85%A8%E5%90%AF%E5%8A%A8"><span class="nav-text">关闭安全启动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85"><span class="nav-text">开始安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5Archlivecd"><span class="nav-text">进入Archlivecd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E7%BD%91"><span class="nav-text">联网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4"><span class="nav-text">更新系统时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%8C%BA"><span class="nav-text">分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">格式化文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%99btrfs%E5%BB%BA%E7%AB%8B%E5%AD%90%E5%8D%B7"><span class="nav-text">给btrfs建立子卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BA"><span class="nav-text">挂载分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="nav-text">安装系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90fstab"><span class="nav-text">生成fstab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chroot"><span class="nav-text">chroot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%97%B6%E5%8C%BA"><span class="nav-text">设置时区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%8C%96%E8%AE%BE%E7%BD%AE"><span class="nav-text">本地化设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%AD%97"><span class="nav-text">设置主机名字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C"><span class="nav-text">设置开机连接网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Initramfs%E9%85%8D%E7%BD%AE"><span class="nav-text">Initramfs配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEroot%E5%AF%86%E7%A0%81"><span class="nav-text">设置root密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%BE%AE%E7%A0%81%E6%9B%B4%E6%96%B0"><span class="nav-text">安装微码更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85grub"><span class="nav-text">安装grub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%80%E5%87%BA-chroot%E7%8E%AF%E5%A2%83%EF%BC%8C%E8%BE%93%E5%85%A5-exit%E6%88%96%E8%80%85%E6%8C%89-Ctrl-d"><span class="nav-text">退出 chroot环境，输入 exit或者按 Ctrl+d</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">卸载文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E6%9C%BA%EF%BC%8C%E7%A7%BB%E9%99%A4%E5%AE%89%E8%A3%85%E4%BB%8B%E8%B4%A8%EF%BC%8C%E7%84%B6%E5%90%8E%E9%87%8D%E5%90%AF-%E9%87%8D%E5%90%AF%E5%90%8E%E4%BD%A0%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8f12%E8%8F%9C%E5%8D%95%E6%9D%A5%E8%BF%9B%E5%85%A5%E5%88%B0%E5%88%9A%E5%88%9A%E5%AE%89%E8%A3%85%E5%A5%BD%E7%9A%84archlinux"><span class="nav-text">关机，移除安装介质，然后重启(重启后你可以使用f12菜单来进入到刚刚安装好的archlinux)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E4%B8%80%E4%BA%9B%E5%B0%8F%E4%BA%8B%E6%83%85"><span class="nav-text">处理一些小事情</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0archlinuxcn%E6%BA%90"><span class="nav-text">添加archlinuxcn源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85paru"><span class="nav-text">安装paru</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93"><span class="nav-text">安装中文字体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7arch-%E8%BF%99%E9%87%8C%E6%8D%A2%E6%88%90%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D"><span class="nav-text">添加用户arch(这里换成你想要的用户名)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0sudo%E6%9D%83%E9%99%90"><span class="nav-text">添加sudo权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E4%B8%80%E4%B8%AA%E9%9F%B3%E9%A2%91%E9%A9%B1%E5%8A%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">解决一个音频驱动的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85%E6%A1%8C%E9%9D%A2"><span class="nav-text">开始安装桌面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%99%BB%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-text">安装登录管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85server"><span class="nav-text">安装server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%8C%96%E5%AE%89%E8%A3%85kde"><span class="nav-text">最小化安装kde</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%8F%8C%E6%98%BE%E5%8D%A1%E9%97%AE%E9%A2%98"><span class="nav-text">解决双显卡问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0ibt-off"><span class="nav-text">添加内核参数ibt&#x3D;off</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85n%E5%8D%A1%E9%A9%B1%E5%8A%A8%E4%B8%8E%E9%85%8D%E7%BD%AE-%E4%BD%BF%E7%94%A8PRIME%E6%96%B9%E6%A1%88"><span class="nav-text">安装n卡驱动与配置(使用PRIME方案)</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/project/">E= γ mc²</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/project/js/libs/Swup.min.js"></script>
+
+<script src="/project/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/project/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/project/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/project/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/project/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/project/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/project/js/utils.js" type="module"></script>
+
+<script src="/project/js/main.js" type="module"></script>
+
+<script src="/project/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/project/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/project/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/project/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/project/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/project/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/project/js/tools/runtime.js"></script>
+
+    
+<script src="/project/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/project/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/project/js/libs/Typed.min.js"></script>
+
+  
+<script src="/project/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/project/js/libs/anime.min.js"></script>
+
+        
+<script src="/project/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/project/js/layouts/toc.js" type="module"></script>
+
+<script src="/project/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
