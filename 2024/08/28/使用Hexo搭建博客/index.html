@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="E= γ mc²">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://blog.lolicon.bf/2024/08/28/使用hexo搭建博客/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="从零开始的Hexo博客部署教程  本教程使用Arch Linux,博客部署于Github Pages,域名托管在Cloudflare  参考Hexo for Github website  在Github上创建一个项目 仓库名称固定格式为:xxx.github.io (xxx指的是用户名,下面所有的xxx都是这个含义;此为固定写法,请不要更改) 安装与配置Git 安装Git 1sudo pacma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Hexo搭建博客">
+<meta property="og:url" content="https://blog.lolicon.bf/2024/08/28/%E4%BD%BF%E7%94%A8Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="从零开始的Hexo博客部署教程  本教程使用Arch Linux,博客部署于Github Pages,域名托管在Cloudflare  参考Hexo for Github website  在Github上创建一个项目 仓库名称固定格式为:xxx.github.io (xxx指的是用户名,下面所有的xxx都是这个含义;此为固定写法,请不要更改) 安装与配置Git 安装Git 1sudo pacma">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/05/13/sbhxtEXD9nPf5uV.png">
+<meta property="article:published_time" content="2024-08-28T13:52:27.497Z">
+<meta property="article:modified_time" content="2024-08-28T13:54:27.690Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/05/13/sbhxtEXD9nPf5uV.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/%E6%A4%BF-32x32.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/%E6%A4%BF-32x32.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/%E6%A4%BF-32x32.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            使用Hexo搭建博客 -
+        
+        E= γ mc²の博客
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        E= γ mc²の博客
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"blog.lolicon.bf","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":"LXGW Wenkai Screen","url":null},"english":{"enable":false,"family":"LXGW Wenkai Screen","url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"E= γ mc²の博客","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                E= γ mc²の博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">使用Hexo搭建博客</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/%E6%A4%BF.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">E= γ mc²</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-28 13:52:27</span>
+        <span class="mobile">2024-08-28 13:52:27</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-28 13:54:27</span>
+            <span class="mobile">2024-08-28 13:54:27</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1>从零开始的Hexo博客部署教程</h1>
+<blockquote>
+<p>本教程使用<code>Arch Linux</code>,博客部署于<code>Github Pages</code>,域名托管在<code>Cloudflare</code></p>
+</blockquote>
+<p>参考<a class="link"   target="_blank" rel="noopener" href="https://xn--zssu6m.xyz/2023/04/14/Hexo-for-Github-website/" >Hexo for Github website <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="在Github上创建一个项目">在<code>Github</code>上创建一个项目</h2>
+<p>仓库名称固定格式为:<code>xxx.github.io</code></p>
+<p>(<code>xxx</code>指的是用户名,下面所有的<code>xxx</code>都是这个含义;此为固定写法,请不要更改)</p>
+<h2 id="安装与配置Git">安装与配置<code>Git</code></h2>
+<h3 id="安装Git">安装<code>Git</code></h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S git</span><br></pre></td></tr></table></figure></div>
+<h3 id="配置Git">配置<code>Git</code></h3>
+<h4 id="设置Git的用户名与邮箱">设置<code>Git</code>的用户名与邮箱</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;你的GitHub用户名&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;你的GitHub注册邮箱&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h4 id="检查上述的设置是否正确">检查上述的设置是否正确</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br></pre></td></tr></table></figure></div>
+<h4 id="生成密钥-需要按三次回车">生成密钥(需要按三次回车)</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure></div>
+<h4 id="查看密钥-公钥">查看密钥(公钥)</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.ssh</span><br><span class="line"><span class="built_in">cat</span> id_rsa.pub</span><br></pre></td></tr></table></figure></div>
+<h4 id="上传密钥到Github">上传密钥到<code>Github</code></h4>
+<p>将刚刚的文件内容复制,进入<a class="link"   target="_blank" rel="noopener" href="https://github.com/settings/keys" >Github setting keys  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>,点击<code>New SSH Key</code>,标题填写一个你喜欢的,把复制的内容粘贴到<code>keys</code>内,最后点添加</p>
+<h4 id="确认密钥设置是否成功">确认密钥设置是否成功</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure></div>
+<p>若成功,会有提示</p>
+<blockquote>
+<p>Hi xxx! You’ve successfully authenticated</p>
+</blockquote>
+<p>(xxx指的是用户名)</p>
+<h2 id="安装Nodejs及其包管理yarn">安装<code>Nodejs</code>及其包管理<code>yarn</code></h2>
+<p>这里选用<code>yarn</code>,而不是<code>npm</code>或者<code>pnpm</code>的原因是,我尝试了这三个包管理,只有<code>yarn</code>在我这里可以正常运行并且速度飞快</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S nodejs yarn</span><br></pre></td></tr></table></figure></div>
+<h2 id="安装Hexo">安装<code>Hexo</code></h2>
+<p>首先需要新建一个文件夹,用于存放博客文件</p>
+<p>比如先在家目录创建hexo目录,用于存放文件</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> ~/hexo</span><br></pre></td></tr></table></figure></div>
+<p>进入目录</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/hexo</span><br></pre></td></tr></table></figure></div>
+<p>安装<code>Hexo</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yarn add -g hexo-cli</span><br></pre></td></tr></table></figure></div>
+<p>初始化<code>Hexo</code>博客</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure></div>
+<h2 id="尝试新建一篇文章并运行本地server">尝试新建一篇文章并运行本地server</h2>
+<p>新建一篇文章,名字为:test</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n <span class="string">&quot;test&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>编辑文章,文章在<code>source/_posts</code>目录下面</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="built_in">source</span>/_posts/test.md</span><br></pre></td></tr></table></figure></div>
+<p>构建</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></div>
+<p>运行本地server,查看效果</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></div>
+<p>进入``localhost:4000`查看博客</p>
+<h2 id="推送网站到Github">推送网站到<code>Github</code></h2>
+<h3 id="首先需要明确要改的config是什么">首先需要明确要改的config是什么</h3>
+<blockquote>
+<p>hexo文件下的<code>_config.yml</code>是<strong>站点的配置</strong><br>
+而themes下的某主题的<code>_config.yml</code>只是<strong>主题的配置</strong></p>
+</blockquote>
+<h3 id="关联Hexo和Github">关联<code>Hexo</code>和<code>Github</code></h3>
+<p>打开站点的<code>_config.yml</code></p>
+<div class="highlight-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"> <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line"> <span class="attr">repo:</span> <span class="string">git@github.com:xxx/xxx.github.io.git</span></span><br><span class="line"> <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="安装Git部署插件">安装<code>Git</code>部署插件</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add hexo-deployer-git --save</span><br></pre></td></tr></table></figure></div>
+<h3 id="推送网站到Github-2">推送网站到<code>Github</code></h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure></div>
+<h2 id="绑定域名">绑定域名</h2>
+<h3 id="在Cloudflare中-解析域名到Github">在<code>Cloudflare</code>中,解析域名到<code>Github</code></h3>
+<p>在<code>Cloudflare</code>中的域名设置里面,<code>DNS</code>-<code>记录</code>中,域名类型选择<code>CNAME</code>,主机记录<code>@</code>,记录值<code>xxx.github.io</code></p>
+<h3 id="在Github中绑定域名">在<code>Github</code>中绑定域名</h3>
+<p>登录GitHub，进入之前创建的仓库，点击settings，然后点击pages，设置Custom domain，输入你的域名</p>
+<p><mark>注意:如果选择用<code>Cloudflare</code>的代理并且把<code>Github</code>的强制HTTPS打开,需要在<code>Cloudflare</code>的域名设置里面,<code>SSL/TLS</code>-<code>概述</code>里面,将<code>SSL/TLS 加密模式</code>从<code>灵活</code>更改为<code>完全</code></mark></p>
+<hr>
+<h1>其他的一些内容</h1>
+<h2 id="如何安装主题">如何安装主题</h2>
+<h2 id="如何更换Markdown渲染器">如何更换<code>Markdown</code>渲染器</h2>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42951560/article/details/123596899" >【Hexo】选择更高级的Markdown渲染器_hexo markdown-CSDN博客 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Hexo默认搭配的Markdown渲染器是 <a class="link"   target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-renderer-marked" >hexo-renderer-marked <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，但其支持的渲染格式有限，因此更换为功能更加强大，渲染速度更快的 <a class="link"   target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-renderer-markdown-it" >hexo-renderer-markdown-it <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 渲染器</p>
+<h3 id="安装">安装</h3>
+<p>卸载 <code>hexo-renderer-marked</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn remove hexo-renderer-marked --save</span><br></pre></td></tr></table></figure></div>
+<p>安装 <code>hexo-renderer-markdown-it</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add hexo-renderer-markdown-it --save</span><br></pre></td></tr></table></figure></div>
+<p>还有一些插件可以选择</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">markdown-it-abbr</td>
+<td style="text-align:center">注释</td>
+<td style="text-align:center"><code>*[HTML]: 超文本标记语言</code></td>
+<td style="text-align:center"><p> <abbr title="超文本标记语言">HTML</abbr></p></td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-emoji</td>
+<td style="text-align:center">表情</td>
+<td style="text-align:center"><code>:)</code></td>
+<td style="text-align:center">😃</td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-footnote</td>
+<td style="text-align:center">脚注</td>
+<td style="text-align:center"><code>参考文献[^1]</code></td>
+<td style="text-align:center">参考文献<a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42951560/article/details/123596899#fn1" >1 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-ins</td>
+<td style="text-align:center">下划线</td>
+<td style="text-align:center"><code>++下划线++</code></td>
+<td style="text-align:center"><u>下划线</u></td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-mark</td>
+<td style="text-align:center">突出显示</td>
+<td style="text-align:center"><code>==标记==</code></td>
+<td style="text-align:center"><mark>标记</mark></td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-sub</td>
+<td style="text-align:center">下标</td>
+<td style="text-align:center"><code>H~2~O</code></td>
+<td style="text-align:center">$H_2O$</td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-sup</td>
+<td style="text-align:center">上标</td>
+<td style="text-align:center"><code>X^2^</code></td>
+<td style="text-align:center">$X^2$</td>
+</tr>
+<tr>
+<td style="text-align:center">markdown-it-checkbox</td>
+<td style="text-align:center">复选框</td>
+<td style="text-align:center">未选：<code>- [ ]</code>  <br>选中：<code>- [x]</code></td>
+<td style="text-align:center"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s2.loli.net/2024/05/13/sbhxtEXD9nPf5uV.png"
+                      alt=""
+                ></td>
+</tr>
+</tbody>
+</table>
+<h3 id="配置">配置</h3>
+<p>将如下文本复制粘贴到Hexo的配置文件 <code>_config.yml</code> 的尾部</p>
+<div class="highlight-container" data-rel="Yml"><figure class="iseeu highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">markdown:</span></span><br><span class="line">  <span class="attr">preset:</span> <span class="string">&quot;default&quot;</span></span><br><span class="line">  <span class="attr">render:</span></span><br><span class="line">    <span class="attr">html:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">xhtmlOut:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">langPrefix:</span> <span class="string">&quot;language-&quot;</span></span><br><span class="line">    <span class="attr">breaks:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">linkify:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">typographer:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">quotes:</span> <span class="string">&quot;“”‘’&quot;</span></span><br><span class="line">  <span class="attr">enable_rules:</span></span><br><span class="line">  <span class="attr">disable_rules:</span></span><br><span class="line">  <span class="attr">plugins:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-abbr</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-cjk-breaks</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-deflist</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-emoji</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-footnote</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-ins</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-mark</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-sub</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-sup</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-checkbox</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-imsize</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">markdown-it-expandable</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">markdown-it-container</span></span><br><span class="line">      <span class="attr">options:</span> <span class="string">success</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">markdown-it-container</span></span><br><span class="line">      <span class="attr">options:</span> <span class="string">tips</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">markdown-it-container</span></span><br><span class="line">      <span class="attr">options:</span> <span class="string">warning</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">markdown-it-container</span></span><br><span class="line">      <span class="attr">options:</span> <span class="string">danger</span></span><br><span class="line">  <span class="attr">anchors:</span></span><br><span class="line">    <span class="attr">level:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">collisionSuffix:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="attr">permalink:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">permalinkClass:</span> <span class="string">&quot;header-anchor&quot;</span></span><br><span class="line">    <span class="attr">permalinkSide:</span> <span class="string">&quot;left&quot;</span></span><br><span class="line">    <span class="attr">permalinkSymbol:</span> <span class="string">&quot;¶&quot;</span></span><br><span class="line">    <span class="attr">case:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">separator:</span> <span class="string">&quot;-&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="如何在运行server的时候自动刷新">如何在运行server的时候自动刷新</h2>
+<p><a class="link"   target="_blank" rel="noopener" href="https://lamirs.vercel.app/hexo-%E5%88%A9%E7%94%A8-browsersync-%E8%BF%9B%E8%A1%8C%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0" >Hexo 利用 browsersync 进行自动刷新 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>hexo s</code> 这个命令可以在本地预览博客,不过它并不会进行自动刷新,因此不方便实时查看更改结果,有一个插件 <a class="link"   target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-browsersync" >hexo-browsersync <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 或许可以解决这个问题</p>
+<h3 id="安装-2">安装</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add hexo-browsersync</span><br></pre></td></tr></table></figure></div>
+<p>然后再次运行<code>hexo s</code>就行了</p>
+<h2 id="更改头像">更改头像</h2>
+<p>把头像所用的图片存放到<code>source/images</code>下面</p>
+<p>编辑主题的配置文件<code>_config.redefine.yml</code></p>
+<div class="highlight-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">defaults:</span> </span><br><span class="line">  <span class="comment"># Site avatar</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">/images/xxx.jpg</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="更改站点的缩略图">更改站点的缩略图</h2>
+<p>先使用<a class="link"   target="_blank" rel="noopener" href="http://www.bitbug.net/" >在线制作ico <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>把图片修改成32x32大小的</p>
+<p>把修改好的文件存放到<code>source/images</code>下面</p>
+<p>编辑主题的配置文件<code>_config.redefine.yml</code></p>
+<div class="highlight-container" data-rel="Yaml"><figure class="iseeu highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">defaults:</span></span><br><span class="line">  <span class="comment"># Favicon</span></span><br><span class="line">  <span class="attr">favicon:</span> <span class="string">/images/xxx-32x32.ico</span></span><br></pre></td></tr></table></figure></div>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> 使用Hexo搭建博客</li>
+        <li><strong>作者:</strong> E= γ mc²</li>
+        <li><strong>创建于
+                :</strong> 2024-08-28 13:52:27</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-08-28 13:54:27
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://redefine.ohevan.com/2024/08/28/使用Hexo搭建博客/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/08/28/%E4%BD%BF%E7%94%A8Qexo,%E7%BB%99Hexo%E6%90%AD%E5%BB%BA%E5%9C%A8%E7%BA%BF%E7%9A%84%E5%8D%9A%E5%AE%A2%E7%BC%96%E8%BE%91%E5%99%A8/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">使用Qexo,给Hexo搭建在线的博客编辑器</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/05/12/arch%E6%90%AD%E5%BB%BAopenvpn%E6%9C%8D%E5%8A%A1%E7%AB%AF-%E4%BA%8C%E5%B1%82%E8%B7%AF%E7%94%B1%E5%92%8C%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">arch搭建openvpn服务端(二层路由和三层路由)</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">使用Hexo搭建博客</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">从零开始的Hexo博客部署教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8Github%E4%B8%8A%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE"><span class="nav-text">在Github上创建一个项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AEGit"><span class="nav-text">安装与配置Git</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Git"><span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEGit"><span class="nav-text">配置Git</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Nodejs%E5%8F%8A%E5%85%B6%E5%8C%85%E7%AE%A1%E7%90%86yarn"><span class="nav-text">安装Nodejs及其包管理yarn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Hexo"><span class="nav-text">安装Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E6%96%B0%E5%BB%BA%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B9%B6%E8%BF%90%E8%A1%8C%E6%9C%AC%E5%9C%B0server"><span class="nav-text">尝试新建一篇文章并运行本地server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E9%80%81%E7%BD%91%E7%AB%99%E5%88%B0Github"><span class="nav-text">推送网站到Github</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E5%85%88%E9%9C%80%E8%A6%81%E6%98%8E%E7%A1%AE%E8%A6%81%E6%94%B9%E7%9A%84config%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">首先需要明确要改的config是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94Hexo%E5%92%8CGithub"><span class="nav-text">关联Hexo和Github</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Git%E9%83%A8%E7%BD%B2%E6%8F%92%E4%BB%B6"><span class="nav-text">安装Git部署插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E9%80%81%E7%BD%91%E7%AB%99%E5%88%B0Github-2"><span class="nav-text">推送网站到Github</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D"><span class="nav-text">绑定域名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8Cloudflare%E4%B8%AD-%E8%A7%A3%E6%9E%90%E5%9F%9F%E5%90%8D%E5%88%B0Github"><span class="nav-text">在Cloudflare中,解析域名到Github</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8Github%E4%B8%AD%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D"><span class="nav-text">在Github中绑定域名</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">其他的一些内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98"><span class="nav-text">如何安装主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9B%B4%E6%8D%A2Markdown%E6%B8%B2%E6%9F%93%E5%99%A8"><span class="nav-text">如何更换Markdown渲染器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8%E8%BF%90%E8%A1%8Cserver%E7%9A%84%E6%97%B6%E5%80%99%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0"><span class="nav-text">如何在运行server的时候自动刷新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-2"><span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E5%A4%B4%E5%83%8F"><span class="nav-text">更改头像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E7%AB%99%E7%82%B9%E7%9A%84%E7%BC%A9%E7%95%A5%E5%9B%BE"><span class="nav-text">更改站点的缩略图</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">E= γ mc²</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 15 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
