@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="E= γ mc²">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://lolicon.2004031.xyz/2023/11/04/arch安装-lvm-btrfs-zfs-理论/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="简介 最大限度的使用各个技术的优点   arch  比较简单的,可以自定义的系统    lvm  动态管理卷和磁盘分区    btrfs  linux内核自带的,功能强大的文件系统,同时兼容性好    zfs  最强大的文件系统,自带了三个级别的数据去重    参考教程 lvm教程+在lvm上面安装arch的教程+在zfs上面安装arch的教程:      准备工作 硬盘分区计划 gpt+lega">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arch安装(lvm+btrfs+zfs)(理论)">
+<meta property="og:url" content="https://lolicon.2004031.xyz/2023/11/04/arch%E5%AE%89%E8%A3%85-lvm-btrfs-zfs-%E7%90%86%E8%AE%BA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="简介 最大限度的使用各个技术的优点   arch  比较简单的,可以自定义的系统    lvm  动态管理卷和磁盘分区    btrfs  linux内核自带的,功能强大的文件系统,同时兼容性好    zfs  最强大的文件系统,自带了三个级别的数据去重    参考教程 lvm教程+在lvm上面安装arch的教程+在zfs上面安装arch的教程:      准备工作 硬盘分区计划 gpt+lega">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z1.ax1x.com/2022/08/28/vWBrM4.jpg">
+<meta property="article:published_time" content="2023-11-04T22:38:14.000Z">
+<meta property="article:modified_time" content="2025-04-07T08:51:26.407Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Arch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z1.ax1x.com/2022/08/28/vWBrM4.jpg">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/%E6%A4%BF-32x32.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/%E6%A4%BF-32x32.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/%E6%A4%BF-32x32.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            arch安装(lvm+btrfs+zfs)(理论) -
+        
+        E= γ mc²の博客
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        E= γ mc²の博客
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"lolicon.2004031.xyz","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":"LXGW Wenkai Screen","url":null},"english":{"enable":false,"family":"LXGW Wenkai Screen","url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"E= γ mc²の博客","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                E= γ mc²の博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">19</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">arch安装(lvm+btrfs+zfs)(理论)</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/%E6%A4%BF.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">E= γ mc²</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-11-04 22:38:14</span>
+        <span class="mobile">2023-11-04 22:38:14</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-04-07 08:51:26</span>
+            <span class="mobile">2025-04-07 08:51:26</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Arch/">Arch</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1>简介</h1>
+<p>最大限度的使用各个技术的优点</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>arch</p>
+<ul class="lvl-2">
+<li class="lvl-4">比较简单的,可以自定义的系统</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>lvm</p>
+<ul class="lvl-2">
+<li class="lvl-4">动态管理卷和磁盘分区</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>btrfs</p>
+<ul class="lvl-2">
+<li class="lvl-4">linux内核自带的,功能强大的文件系统,同时兼容性好</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>zfs</p>
+<ul class="lvl-2">
+<li class="lvl-4">最强大的文件系统,自带了三个级别的数据去重</li>
+</ul>
+</li>
+</ul>
+<h1>参考教程</h1>
+<p>lvm教程+在lvm上面安装arch的教程+在zfs上面安装arch的教程:</p>
+<iframe src="https://wiki.archlinux.org/title/LVM_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" data-src="" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+<iframe src="https://wiki.archlinux.org/title/Install_Arch_Linux_on_LVM" data-src="" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+<iframe src="https://wiki.archlinux.org/title/Install_Arch_Linux_on_ZFS" data-src="" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+<iframe src="https://wiki.archlinux.org/title/GRUB_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E5%AE%89%E8%A3%85_2" data-src="" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1s5411N7qN&amp;page=1&amp;high_quality=1&amp;as_wide=1&amp;allowfullscreen=true" data-src="" border="0" frameborder="no" framespacing="0" allowfullscreen="true" sandbox="allow-top-navigation-by-user-activation allow-same-origin allow-forms allow-scripts allow-popups" style="height: 360px; width: 640px;"></iframe>
+<h1>准备工作</h1>
+<h2 id="硬盘分区计划">硬盘分区计划</h2>
+<h3 id="gpt-legacy-efi">gpt+legacy+efi</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>分区一</p>
+<ul class="lvl-2">
+<li class="lvl-4">1MB大小未格式化空间,用于安装GRUB</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>分区二(Fat32)</p>
+<ul class="lvl-2">
+<li class="lvl-4">efi分区</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>分区三(物理卷 (PV))</p>
+<ul class="lvl-2">
+<li class="lvl-4">
+<p>变成lvm卷组(VG)</p>
+<ul class="lvl-4">
+<li class="lvl-6">
+<p>(下列都是逻辑卷(LV))</p>
+</li>
+<li class="lvl-6">
+<p>arch(BTRFS)<br>
+<mark>GRUB不支持zfs的全部特性,所以需要一个单独的分区存放boot,而BTRFS还可以满足快照的要求</mark></p>
+<ul class="lvl-6">
+<li class="lvl-8">@boot</li>
+<li class="lvl-8">@root</li>
+<li class="lvl-8">@snapshots<br>
+使用snapper进行快照管理,自动快照</li>
+</ul>
+</li>
+<li class="lvl-6">
+<p>home(ZFS)</p>
+<ul class="lvl-6">
+<li class="lvl-8">home<br>
+打开压缩与去重</li>
+</ul>
+</li>
+<li class="lvl-6">
+<p>(swap)</p>
+</li>
+<li class="lvl-6">
+<p>snapshots(lvm的快照)</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://z1.ax1x.com/2022/08/28/vWBrM4.jpg"
+                      alt="arch+lvm+btrfs+zfs-4"
+                ></p>
+<h2 id="连接到网络">连接到网络</h2>
+<h3 id="确保网络接口已启用">确保网络接口已启用</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip <span class="built_in">link</span></span><br></pre></td></tr></table></figure></div>
+<p>输出如下</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master br0 state DOWN mode DEFAULT qlen 1000</span><br><span class="line">...</span><br></pre></td></tr></table></figure></div>
+<p>当 <code>UP</code>在 <code>&lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt;</code>中时，表示已启动，跟后面的 <code>state DOWN</code>没有关系</p>
+<p>提示：可以用<code>ip link set *interface* up|down</code>来启用或关闭网络接口</p>
+<h3 id="配置网络连接">配置网络连接</h3>
+<p>有线网络</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start dhcpcd.service</span><br></pre></td></tr></table></figure></div>
+<h3 id="用-ping检查网络连接">用 <code>ping</code>检查网络连接</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping -c4 8.8.8.8</span><br></pre></td></tr></table></figure></div>
+<h2 id="更新系统时间">更新系统时间</h2>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timedatectl set-ntp <span class="literal">true</span></span><br></pre></td></tr></table></figure></div>
+<p>确保时间正确</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timedatectl status</span><br></pre></td></tr></table></figure></div>
+<h2 id="给iso换源">给iso换源</h2>
+<p>禁用reflector,并不好用</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -R reflector</span><br></pre></td></tr></table></figure></div>
+<p>将以下内容编辑到<code>/etc/pacman.d/mirrorlist</code>的顶端</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.ustc.edu.cn/archlinux/<span class="variable">$repo</span>/os/<span class="variable">$arch</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="给iso添加zfs">给iso添加zfs</h2>
+<h3 id="安装代理用的软件">安装代理用的软件</h3>
+<p>安装软件</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S proxychains</span><br></pre></td></tr></table></figure></div>
+<p>配置代理线路(推荐使用v2raya的端口分享),修改此文件尾部</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/proxychains.conf</span><br></pre></td></tr></table></figure></div>
+<h3 id="脚本添加zfs">脚本添加zfs</h3>
+<p>一个脚本，用于在正在运行的 archiso 系统上轻松安装和加载 ZFS 模块。它应该适用于任何archiso版本。</p>
+<p>参见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/eoli3n/archiso-zfs" >eoli3n/archiso-zfs <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s https://eoli3n.github.io/archzfs/init | bash  </span><br></pre></td></tr></table></figure></div>
+<h3 id="手动添加zfs">手动添加zfs</h3>
+<h4 id="添加archzfs仓库">添加archzfs仓库</h4>
+<p>将以下内容添加到<code>/etc/pacman.conf</code>的末尾</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[archzfs]</span><br><span class="line"><span class="comment"># Server = http://archzfs.com/$repo/$arch</span></span><br><span class="line">Server = http://mirror.sum7.eu/archlinux/archzfs/<span class="variable">$repo</span>/<span class="variable">$arch</span></span><br><span class="line"><span class="comment"># Server = https://mirror.biocrafting.net/archlinux/archzfs/$repo/$arch</span></span><br><span class="line"><span class="comment"># Server = https://mirror.in.themindsmaze.com/archzfs/$repo/$arch</span></span><br><span class="line"><span class="comment"># Server = https://zxcvfdsa.com/archzfs/$repo/$arch</span></span><br></pre></td></tr></table></figure></div>
+<p>仓库和软件包都已签名，因此您必须将密钥添加到 pacman 的可信密钥列表中</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://archzfs.com/archzfs.gpg |  pacman-key -a -</span><br><span class="line">pacman-key --lsign-key $(curl -L https://git.io/JsfVS)</span><br><span class="line">curl -L https://git.io/Jsfw2 &gt; /etc/pacman.d/mirrorlist-archzfs</span><br></pre></td></tr></table></figure></div>
+<p>更新pacman数据库</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Sy</span><br></pre></td></tr></table></figure></div>
+<h4 id="给iso安装zfs模块与zfs工具">给iso安装zfs模块与zfs工具</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S archzfs-dkms zfs-utils</span><br></pre></td></tr></table></figure></div>
+<h4 id="启用zfs模块">启用zfs模块</h4>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">modprobe zfs</span><br></pre></td></tr></table></figure></div>
+<h1>硬盘分区与文件系统创建</h1>
+<h2 id="创建legacy需要的启动分区">创建legacy需要的启动分区</h2>
+<p>使用BIOS引导GPT的分区情况（BIOS/GPT）下，必须使用BIOS 启动分区。GRUB将<code>core.img</code>嵌入到这个分区。</p>
+<p><mark><strong>注意：</strong></mark></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><mark>在尝试这种方法之前请记住不是所有的系统都支持这种分区方案，请参阅 <a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Partitioning#GUID_Partition_Table" > <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</mark></p>
+</li>
+<li class="lvl-2">
+<p><mark>此额外分区只由 GRUB 在 BIOS/GPT 分区方式中使用。对于 BIOS/MBR 分区方式，GRUB会把<code>core.img</code>放到MBR后间隙(post-MBR gap)中去，而在GPT中并不能保证在第一个分区之前有可以这样使用的空间。</mark></p>
+</li>
+<li class="lvl-2">
+<p><mark>UEFI系统也不需要这额外分区，因为它不需要嵌入启动扇区。UEFI系统需要有EFI 系统分区。</mark></p>
+</li>
+</ul>
+<p>安装 GRUB 前，在一个没有文件系统的磁盘上，创建一个1兆字节（使用fdisk或gdisk和参数<code>+1M</code>）的分区，将分区类型设置为 GUID <code>21686148-6449-6E6F-744E-656564454649</code>。</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>对于fdisk，选择分区类型 <code>BIOS boot</code>。</p>
+</li>
+<li class="lvl-2">
+<p>对于gdisk，选择分区类型代码 <code>ef02</code>。</p>
+</li>
+<li class="lvl-2">
+<p>对于parted， 在新创建的分区上设置/激活 <code>bios_grub</code> 标记。</p>
+</li>
+</ul>
+<p>这个分区可以处于磁盘的前 2TB 空间中的任意位置，但需要在安装 GRUB 之前创建好。分区建立好后，按下面的命令安装启动管理器。</p>
+<p>第一个分区之前的空间也可以用作 BIOS 启动分区，但是这会违反 GPT 对齐规范。因为这个分区不会经常访问，所以性能的影响很小，只不过有些分区工具会发出警告。可以在fdisk或gdisk中创建一个从 34 扇区开始，一直到 2047扇区的分区，然后按照上述方式设置类型。为了让其它分区对齐，可以最后再创建此分区。</p>
+<h2 id="在LVM上安装Arch-Linux的简介">在LVM上安装Arch Linux的简介</h2>
+<p>你应该在<a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Installation_guide_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" >安装指南 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>中的<a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Partitioning_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" >分区 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>和<a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/File_systems_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"  title="File systems (简体中文)">创建文件系统 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>这一步中创建LVM卷。不要直接格式化一个分区作为你的根文件系统（/），而应将其创建在一个逻辑卷（LV）中。</p>
+<p>快速导览：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>创建物理卷（PV）所在的分区。</p>
+</li>
+<li class="lvl-2">
+<p>创建物理卷（PV）。如果你只有一个硬盘，那么你最好只创建一个分区一个物理卷；如果你有多个硬盘，你可以创建多个分区，在每个分区上分别创建一个物理卷。</p>
+</li>
+<li class="lvl-2">
+<p>创建卷组（VG），并把所有物理卷加进卷组。</p>
+</li>
+<li class="lvl-2">
+<p>在卷组（VG）上创建逻辑卷（LV）。</p>
+</li>
+<li class="lvl-2">
+<p>继续<a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Installation_guide_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%88%86%E5%8C%BA"  title="Installation guide (简体中文)">安装指南 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>中的格式化分区步骤。</p>
+</li>
+<li class="lvl-2">
+<p>当你做到安装指南中的“Initramfs”步骤时，把 <code>lvm2</code>加入到 <code>mkinitcpio.conf</code>文件中（请参考下文）。</p>
+</li>
+</ul>
+<p><strong>警告：</strong> 若你使用不支持LVM的引导程序，<code>/boot</code>不能置于LVM中。你必须创建一个独立的<code>/boot</code>分区并直接格式化它。已知支持LVM的引导程序只有GRUB。</p>
+<h2 id="创建lvm部分-自己写的教程-gpt-legacy-无swap-EFI未启用">创建lvm部分,自己写的教程(gpt+legacy)(无swap)(EFI未启用)</h2>
+<h3 id="安装lvm所需的软件">安装lvm所需的软件</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S lvm2</span><br></pre></td></tr></table></figure></div>
+<h3 id="创建lvm">创建lvm</h3>
+<h4 id="创建物理卷-PV">创建物理卷(PV)</h4>
+<p>可通过以下命令列出可被用作物理卷的设备：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvmdiskscan</span><br></pre></td></tr></table></figure></div>
+<p>在列出的设备上创建物理卷：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sda3</span><br></pre></td></tr></table></figure></div>
+<h4 id="创建卷组-VG">创建卷组(VG)</h4>
+<p>创建完成物理卷（PV）之后，下一步就是在该物理卷创建卷组（VG）了。 首先必须先在其中一个物理卷（PV）创建一个卷组：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgcreate Arch /dev/sda3</span><br></pre></td></tr></table></figure></div>
+<h4 id="创建逻辑卷（LV）">创建逻辑卷（LV）</h4>
+<p>创建完卷组（VG）之后，就可以开始创建逻辑卷（LV）了。输入下面命令以指定新逻辑卷的名字、大小及其所在的卷组：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvcreate -L &lt;卷大小&gt; &lt;卷组名&gt; -n &lt;卷名&gt;</span><br></pre></td></tr></table></figure></div>
+<p>该逻辑卷创建完后，你就可以通过<code>/dev/mapper/Volgroup00-lvolhome</code>或<code>/dev/VolGroup00/lvolhome</code>来访问它。与卷组命名类似，你可以按你的需要将逻辑卷命名。</p>
+<p>如果你想让要创建的逻辑卷拥有卷组（VG）的所有未使用空间，请使用以下命令：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvcreate -L +100%FREE  &lt;volume_group&gt; -n &lt;logical_volume&gt;</span><br></pre></td></tr></table></figure></div>
+<p><mark>注意：为了使上述命令能正常运行，你可能需要加载<code>device-mapper</code>内核模块（请使用命令 <code>modprobe dm-mod</code> ）。</mark></p>
+<h2 id="建立文件系统与挂载逻辑卷">建立文件系统与挂载逻辑卷</h2>
+<p>现在你的逻辑卷应该已经在<code>/dev/mapper/</code>和<code>/dev/&lt;i&gt;YourVolumeGroupName&lt;/i&gt;</code>中了。如果你无法在以上位置找到它，请使用以下命令来加载模块、并扫描与激活卷组：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">modprobe dm-mod</span><br><span class="line">vgscan</span><br><span class="line">vgchange -ay</span><br></pre></td></tr></table></figure></div>
+<p>现在你可以在逻辑卷上创建文件系统并像普通分区一样挂载它了（如果你正在安装Arch linux，需要更详细的信息，请参考<a class="link"   target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Installation_guide_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BA"  title="Installation guide (简体中文)">挂载分区 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）：</p>
+<p><strong>警告：</strong> 挂载点请选择你所新建的逻辑卷（例如：<code>/dev/mapper/Volgroup00-lvolhome</code>），<strong>不要</strong>使用逻辑卷所在的实际分区设备（即不要使用：<code>/dev/sda2</code>）。</p>
+<h3 id="btrfs部分">btrfs部分</h3>
+<p>建立btrfs文件系统并挂载</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkfs.btrfs /dev/mapper/Arch-arch</span><br><span class="line">mount /dev/mapper/Arch-arch /mnt</span><br></pre></td></tr></table></figure></div>
+<p>建立子卷</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /mnt</span><br><span class="line">btrfs subvolume create @boot</span><br><span class="line">btrfs subvolume create @</span><br><span class="line">btrfs subvolume create @snapshots</span><br></pre></td></tr></table></figure></div>
+<p>重新挂载子卷</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">umonut /mnt</span><br><span class="line">mount /dev/mapper/Arch-<span class="built_in">arch</span> /mnt -o subvol=@</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /mnt/boot</span><br><span class="line"><span class="built_in">mkdir</span> /mnt/.snapshots</span><br><span class="line"></span><br><span class="line">mount /dev/mapper/Arch-<span class="built_in">arch</span> /mnt/boot -o subvol=@boot</span><br><span class="line">mount /dev/mapper/Arch-<span class="built_in">arch</span> /mnt/.snapshots -o subvol=@snapshots</span><br></pre></td></tr></table></figure></div>
+<h3 id="zfs部分">zfs部分</h3>
+<p>创建zfs池</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /mnt/home</span><br><span class="line">zpool create -O compression=zstd -O mountpoint=none -R /mnt homepool /dev/mapper/Arch-homepool -f</span><br></pre></td></tr></table></figure></div>
+<p>创建zfs数据集</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zfs create -o dedup=on -o mountpoint=/home homepool/home</span><br></pre></td></tr></table></figure></div>
+<p>挂载zfs数据集</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zfs mount homepool/home /mnt/home</span><br></pre></td></tr></table></figure></div>
+<h1>安装系统</h1>
+<h2 id="安装基本系统">安装基本系统</h2>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux-zen linux-firmware dkms zfs-dkms nano neovim networkmanager btrfs-progs</span><br></pre></td></tr></table></figure></div>
+<h2 id="配置系统">配置系统</h2>
+<h3 id="生成fstab">生成fstab</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U /mnt &gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure></div>
+<p><mark>记得<code>nano /mnt/etc/fstab</code>,检查lvm,zfs部分是否正确</mark></p>
+<h3 id="给新的系统添加archzfs仓库">给新的系统添加archzfs仓库</h3>
+<p>将以下内容添加到<code>/etc/pacman.conf</code>的末尾</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[archzfs]</span><br><span class="line"><span class="comment"># Server = http://archzfs.com/$repo/$arch</span></span><br><span class="line">Server = http://mirror.sum7.eu/archlinux/archzfs/<span class="variable">$repo</span>/<span class="variable">$arch</span></span><br><span class="line"><span class="comment"># Server = https://mirror.biocrafting.net/archlinux/archzfs/$repo/$arch</span></span><br><span class="line"><span class="comment"># Server = https://mirror.in.themindsmaze.com/archzfs/$repo/$arch</span></span><br><span class="line"><span class="comment"># Server = https://zxcvfdsa.com/archzfs/$repo/$arch</span></span><br></pre></td></tr></table></figure></div>
+<p>仓库和软件包都已签名，因此您必须将密钥添加到 pacman 的可信密钥列表中</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://archzfs.com/archzfs.gpg |  pacman-key -a -</span><br><span class="line">pacman-key --lsign-key $(curl -L https://git.io/JsfVS)</span><br><span class="line">curl -L https://git.io/Jsfw2 &gt; /etc/pacman.d/mirrorlist-archzfs</span><br></pre></td></tr></table></figure></div>
+<h3 id="chroot">chroot</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt</span><br><span class="line">pacman -Syy</span><br></pre></td></tr></table></figure></div>
+<h3 id="时区">时区</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line">hwclock --systohc --localtime</span><br><span class="line">timedatectl set-ntp 1</span><br><span class="line">timedatectl set-timezone Asia/Shanghai</span><br><span class="line">timedatectl set-local-rtc 1</span><br><span class="line">pacman -S ntp</span><br><span class="line">systemctl <span class="built_in">enable</span> ntpd</span><br></pre></td></tr></table></figure></div>
+<h3 id="本地化">本地化</h3>
+<p>移除 <code>/etc/locale.gen</code>对应行前面的注释符号（＃）即可，建议选择带 UTF-8 的项</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/locale.gen</span><br><span class="line">------------------------------</span><br><span class="line">en_US.UTF-8 UTF-8</span><br><span class="line">zh_CN.UTF-8 UTF-8</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locale-gen</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;LANG=en_US.UTF-8&quot;</span> &gt; /etc/locale.conf</span><br></pre></td></tr></table></figure></div>
+<p><strong>警告:</strong> 不推荐在此设置任何中文 locale，会导致 TTY 乱码。</p>
+<h3 id="网络">网络</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> archlinux &gt; /etc/hostname</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/hosts</span><br><span class="line">------------------------------</span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">::1	        localhost</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br></pre></td></tr></table></figure></div>
+<h3 id="Initramfs">Initramfs</h3>
+<p>lvm与zfs的配置</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/mkinitcpio.conf</span><br><span class="line">------------------------</span><br><span class="line">HOOKS=(base systemd ... block lvm2 zfs filesystems)</span><br></pre></td></tr></table></figure></div>
+<p>为了使 <code>btrfs check</code>能够在挂载系统上使用</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/mkinitcpio.conf</span><br><span class="line">------------------------</span><br><span class="line">MODULES=(btrfs)</span><br><span class="line">BINARIES=(btrfs)</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkinitcpio -p linux-zen</span><br></pre></td></tr></table></figure></div>
+<h3 id="zfs自动导入挂载服务">zfs自动导入挂载服务</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> zfs-import-cache zfs-import.target zfs-mount zfs-zed zfs.target</span><br></pre></td></tr></table></figure></div>
+<h3 id="限制zfs的ARC-这个位置我限制的是2GB-你可以根据自己的内存适当的改大或改小">限制zfs的ARC(这个位置我限制的是2GB,你可以根据自己的内存适当的改大或改小)</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;options zfs zfs_arc_max=2147483648&quot;</span> &gt;&gt; /etc/modprobe.d/zfs.conf</span><br></pre></td></tr></table></figure></div>
+<h3 id="设置root密码">设置root密码</h3>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd</span><br></pre></td></tr></table></figure></div>
+<h2 id="安装引导程序">安装引导程序</h2>
+<p>如果你使用的是 <code>intel</code>或 <code>AMD</code>的cpu，安装 <code>microcode</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S intel-ucode</span><br></pre></td></tr></table></figure></div>
+<p>或者</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S amd-ucode</span><br></pre></td></tr></table></figure></div>
+<p>如果你安装到移动u盘上，两个都要安装</p>
+<p>安装 <code>grub</code></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S grub efibootmgr os-prober ntfs-3g</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/default/grub</span><br><span class="line">--------------------</span><br><span class="line">GRUB_PRELOAD_MODULES=<span class="string">&quot;... btrfs&quot;</span></span><br><span class="line">GRUB_DISABLE_OS_PROBER=<span class="literal">false</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target=i386-pc /dev/sda</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></div>
+<p><code>os-prober</code>是为windows和linux双系统准备的</p>
+<p><code>ntfs-3g</code>是为访问ntfs文件系统准备的</p>
+<h2 id="为lvm配置内核参数">为lvm配置内核参数</h2>
+<p>编辑 <code>/etc/default/grub</code> 并将<code>root=/dev/mapper/Arch-arch ​</code>添加至<code>GRUB_CMDLINE_LINUX_DEFAULT</code> 行：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">&quot;quiet splash&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>然后重新生成 <code>grub.cfg</code> 文件：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-mkconfig -o /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></div>
+<h2 id="导出池-卸载文件系统">导出池,卸载文件系统</h2>
+<p>退出 <code>chroot</code>环境，输入 <code>exit</code>或者按 <code>Ctrl+d</code></p>
+<p>zfs</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zfs umount -a</span><br><span class="line">zpool <span class="built_in">export</span> homepool</span><br></pre></td></tr></table></figure></div>
+<p>其他的</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">umount -R /mnt</span><br><span class="line">poweroff</span><br></pre></td></tr></table></figure></div>
+<p>关机，移除安装介质，然后重启</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> arch安装(lvm+btrfs+zfs)(理论)</li>
+        <li><strong>作者:</strong> E= γ mc²</li>
+        <li><strong>创建于
+                :</strong> 2023-11-04 22:38:14</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2025-04-07 08:51:26
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://redefine.ohevan.com/2023/11/04/arch安装-lvm-btrfs-zfs-理论/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Arch/">#Arch</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/11/04/arch%E5%AE%89%E8%A3%85-lvm-btrfs-zfs-%E5%AE%9E%E8%B7%B5/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">arch安装,lvm+btrfs+zfs(尝试过的版本)</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/11/04/%E4%BD%BF%E7%94%A8Arch%E5%AE%89%E8%A3%85NixOS/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">使用Arch安装NixOS</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">arch安装(lvm+btrfs+zfs)(理论)</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">参考教程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA%E8%AE%A1%E5%88%92"><span class="nav-text">硬盘分区计划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gpt-legacy-efi"><span class="nav-text">gpt+legacy+efi</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%88%B0%E7%BD%91%E7%BB%9C"><span class="nav-text">连接到网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E4%BF%9D%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3%E5%B7%B2%E5%90%AF%E7%94%A8"><span class="nav-text">确保网络接口已启用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5"><span class="nav-text">配置网络连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8-ping%E6%A3%80%E6%9F%A5%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5"><span class="nav-text">用 ping检查网络连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4"><span class="nav-text">更新系统时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%99iso%E6%8D%A2%E6%BA%90"><span class="nav-text">给iso换源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%99iso%E6%B7%BB%E5%8A%A0zfs"><span class="nav-text">给iso添加zfs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BB%A3%E7%90%86%E7%94%A8%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">安装代理用的软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%B7%BB%E5%8A%A0zfs"><span class="nav-text">脚本添加zfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%B7%BB%E5%8A%A0zfs"><span class="nav-text">手动添加zfs</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">硬盘分区与文件系统创建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAlegacy%E9%9C%80%E8%A6%81%E7%9A%84%E5%90%AF%E5%8A%A8%E5%88%86%E5%8C%BA"><span class="nav-text">创建legacy需要的启动分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8LVM%E4%B8%8A%E5%AE%89%E8%A3%85Arch-Linux%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="nav-text">在LVM上安装Arch Linux的简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAlvm%E9%83%A8%E5%88%86-%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E6%95%99%E7%A8%8B-gpt-legacy-%E6%97%A0swap-EFI%E6%9C%AA%E5%90%AF%E7%94%A8"><span class="nav-text">创建lvm部分,自己写的教程(gpt+legacy)(无swap)(EFI未启用)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85lvm%E6%89%80%E9%9C%80%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">安装lvm所需的软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAlvm"><span class="nav-text">创建lvm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E6%8C%82%E8%BD%BD%E9%80%BB%E8%BE%91%E5%8D%B7"><span class="nav-text">建立文件系统与挂载逻辑卷</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#btrfs%E9%83%A8%E5%88%86"><span class="nav-text">btrfs部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zfs%E9%83%A8%E5%88%86"><span class="nav-text">zfs部分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">安装系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%9F%BA%E6%9C%AC%E7%B3%BB%E7%BB%9F"><span class="nav-text">安装基本系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%B3%BB%E7%BB%9F"><span class="nav-text">配置系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90fstab"><span class="nav-text">生成fstab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%99%E6%96%B0%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%B7%BB%E5%8A%A0archzfs%E4%BB%93%E5%BA%93"><span class="nav-text">给新的系统添加archzfs仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chroot"><span class="nav-text">chroot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E5%8C%BA"><span class="nav-text">时区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%8C%96"><span class="nav-text">本地化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-text">网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Initramfs"><span class="nav-text">Initramfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zfs%E8%87%AA%E5%8A%A8%E5%AF%BC%E5%85%A5%E6%8C%82%E8%BD%BD%E6%9C%8D%E5%8A%A1"><span class="nav-text">zfs自动导入挂载服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E5%88%B6zfs%E7%9A%84ARC-%E8%BF%99%E4%B8%AA%E4%BD%8D%E7%BD%AE%E6%88%91%E9%99%90%E5%88%B6%E7%9A%84%E6%98%AF2GB-%E4%BD%A0%E5%8F%AF%E4%BB%A5%E6%A0%B9%E6%8D%AE%E8%87%AA%E5%B7%B1%E7%9A%84%E5%86%85%E5%AD%98%E9%80%82%E5%BD%93%E7%9A%84%E6%94%B9%E5%A4%A7%E6%88%96%E6%94%B9%E5%B0%8F"><span class="nav-text">限制zfs的ARC(这个位置我限制的是2GB,你可以根据自己的内存适当的改大或改小)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEroot%E5%AF%86%E7%A0%81"><span class="nav-text">设置root密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%BC%95%E5%AF%BC%E7%A8%8B%E5%BA%8F"><span class="nav-text">安装引导程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BAlvm%E9%85%8D%E7%BD%AE%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0"><span class="nav-text">为lvm配置内核参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E6%B1%A0-%E5%8D%B8%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">导出池,卸载文件系统</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">E= γ mc²</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 19 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
